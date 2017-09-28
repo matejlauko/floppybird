@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1.0, user-scalable=0">
+  <meta name="theme-color" content="#000000">
+
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+  <!-- <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico"> -->
+  <link rel="stylesheet" href="%PUBLIC_URL%/css/reset.css">
+  <link rel="stylesheet" href="%PUBLIC_URL%/css/main.css">
+  <title>Reactive Floppy</title>
+</head>
+
+<body>
+  <noscript>
+    You need to enable JavaScript to run this app.
+  </noscript>
+
+  <div id="gamecontainer">
+    <div id="gamescreen">
+      <div id="sky" class="animated">
+        <div id="flyarea">
+          <div id="ceiling" class="animated"></div>
+          <!-- This is the flying and pipe area container -->
+          <div id="player" class="bird animated"></div>
+
+          <div id="bigscore"></div>
+
+          <div id="splash"></div>
+
+          <div id="scoreboard">
+            <div id="medal"></div>
+            <div id="currentscore"></div>
+            <div id="highscore"></div>
+            <div id="replay"><img src="assets/replay.png" alt="replay"></div>
+          </div>
+
+          <!-- Pipes go here! -->
+        </div>
+      </div>
+      <div id="land" class="animated">
+        <div id="debug"></div>
+      </div>
+    </div>
+  </div>
+  <div id="footer">
+    <a href="http://www.dotgears.com/">original game/concept/art by dong nguyen</a>
+    <a href="http://nebezb.com/">recreated by nebez briefkani</a>
+    <a href="">recreated in FRP by matej lauko</a>
+    <a href="https://github.com/matejlauko/floppybird">view github project</a>
+  </div>
+  <div class="boundingbox" id="playerbox"></div>
+  <div class="boundingbox" id="pipebox"></div>
+
+  <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+</body>
+
+</html>

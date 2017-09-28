@@ -1,0 +1,17 @@
+{
+  "name": "reactive-floppy",
+  "version": "0.1.0",
+  "private": true,
+  "repository": "https://github.com/matejlauko/floppybird",
+  "dependencies": {
+    "react-scripts": "1.0.13",
+    "rxjs": "^5.4.3",
+    "velocity-animate": "^1.5.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
