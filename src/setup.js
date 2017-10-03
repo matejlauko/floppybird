@@ -1,29 +1,32 @@
 import Rx from 'rxjs/Rx';
 
-const setup$ = Rx.Observable.of;
 export let DEBUG_MODE = false;
 
-const SCREENS = {
-  SPLASH_SCREEN: 0,
-  GAME_SCREEN: 1,
-  SCORE_SCREEN: 2,
+export const FPS = 60;
+
+export const STATES = {
+  SPLASH: 0,
+  GAME: 1,
+  SCORE: 2,
 };
 
-const GRAVITY = 0.25;
-const VELOCITY = 0;
-const POSITION = 180;
-const ROTATION = 0;
-const JUMP = -4.6;
+export const GRAVITY = 0.25;
+export const VELOCITY = 0;
+export const POSITION = 180;
+export const ROTATION = 0;
+export const JUMP = -4.6;
 
-let PIPE_HEIGHT = 90;
-const PIPE_WIDTH = 52;
+export let PIPE_HEIGHT = 90;
+export const PIPE_WIDTH = 52;
+export const PIPE_INTERVAL = 1.4;
+export const PIPE_PADDING = 80;
 
-const REPLAY_CLICKABLE = false;
+export const BIRD_WIDTH = 34.0;
+export const BIRD_HEIGHT = 24.0;
 
-Rx.Observable
-  .fromEvent(document, 'DOMContentLoaded')
-  .mapTo(window.location.search)
-  .subscribe(search => {
-    if (search.indexOf('?debug') > -1) DEBUG_MODE = true;
-    if (search.indexOf('?easy') > -1) PIPE_HEIGHT = 200;
-  });
+export const REPLAY_CLICKABLE = false;
+
+export default function setup(search) {
+  if (search.indexOf('?debug') > -1) DEBUG_MODE = true;
+  if (search.indexOf('?easy') > -1) PIPE_HEIGHT = 200;
+}
