@@ -35,19 +35,21 @@ const createScoreImage = (digits, elemscore, type = 'small') => {
   }
 };
 
-export const setBigScore = score => {
+export const setBigScore = (score, erase = false) => {
   const elemscore = document.getElementById('bigscore');
   elemscore.innerHTML = '';
-  createScoreImage(score.toString().split(''), elemscore);
+  if (erase) return false;
+
+  createScoreImage(score.toString().split(''), elemscore, 'big');
 };
 
 export const setSmallScore = score => {
   const elemscore = document.getElementById('currentscore');
   elemscore.innerHTML = '';
-  createScoreImage(score.toString().split(''), elemscore, 'big');
+  createScoreImage(score.toString().split(''), elemscore);
 };
 
-export const setHighscore = score => {
+export const setHighScore = score => {
   const elemscore = document.getElementById('highscore');
   elemscore.innerHTML = '';
   createScoreImage(score.toString().split(''), elemscore);

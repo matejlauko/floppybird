@@ -19,7 +19,15 @@ import {
   BIRD_HEIGHT,
   PIPE_WIDTH,
 } from './setup';
-import { updateBird, drawPipe, toggleAnimation } from './update';
+import {
+  updateBird,
+  drawPipe,
+  toggleAnimation,
+  setBigScore,
+  setHighScore,
+  setSmallScore,
+  setMedal,
+} from './update';
 
 let flyArea = null;
 let landTop = null;
@@ -28,8 +36,17 @@ let birdEl = null;
 let gameSusbsription = null;
 let pipeSubscription = null;
 let birdSubscription = null;
+let connectableGameSubscription = null;
 
+/**
+ * Resets the game
+ */
 export const reset = () => {
+  console.log('reset called');
+
+  // Reste game score
+  scoreSubject$.next(null);
+
   birdEl = document.getElementById('player');
   flyArea = document.getElementById('flyarea');
   landTop = document.getElementById('land').getBoundingClientRect().top;
@@ -42,30 +59,48 @@ export const reset = () => {
   document.getElementById('scoreboard').classList.remove('isShown');
   document.getElementById('replay').classList.remove('isShown');
   document.getElementById('bigscore').style.display = 'block';
+  setBigScore(0, true);
 
-  input$.take(1).subscribe(startGame);
+  input$
+    .withLatestFrom(Rx.Observable.of(1).delay(1000))
+    .take(1)
+    .subscribe(startGame);
 };
 
+/**
+ * Has the game ended?
+ */
 const isAlive = ({ bird, currentPipe }) => {
   const deadByPipe =
     currentPipe &&
-    (currentPipe.topPipeBottom > bird.top || currentPipe.bottomPipeTop < bird.bottom);
+    (currentPipe.topPipeBottom > bird.position || currentPipe.bottomPipeTop < bird.bottom);
 
   return bird.bottom < landTop && !deadByPipe;
 };
 
+/**
+ * Main game observer
+ */
 const game = state => {
-  if (!isAlive(state)) {
+  if (state && !isAlive(state)) {
+    connectableGameSubscription.unsubscribe();
     gameSusbsription.unsubscribe();
     pipeSubscription.unsubscribe();
     playerDead();
   }
+  score$
+    .distinctUntilKeyChanged('score')
+    .pluck('score')
+    .subscribe(setBigScore);
 };
 
+/**
+ * Start the game
+ */
 export default function startGame() {
   document.getElementById('splash').classList.remove('isShown');
-  console.log('startgame');
   birdSubscription = bird$.subscribe(updateBird(birdEl));
+  connectableGameSubscription = game$.connect();
   gameSusbsription = game$.subscribe(game);
   pipeSubscription = pipe$.subscribe(drawPipe(flyArea));
 }
@@ -137,6 +172,8 @@ const getCurrentPipe = (pipesState, birdState) => {
   return null;
 };
 
+const pipePassed = (currentPipe, birdState) => currentPipe && birdState.left > currentPipe.right;
+
 const updatePipes = (pipesState, newPipe, currentPipe, birdState) => {
   // Add new pipe to the end
   if (newPipe) {
@@ -145,7 +182,7 @@ const updatePipes = (pipesState, newPipe, currentPipe, birdState) => {
   }
 
   // Remove passed pipe
-  if (currentPipe && birdState.left > currentPipe.right) {
+  if (pipePassed(currentPipe, birdState)) {
     pipesState = pipesState.slice(1, pipesState.length);
     console.debug('remove pipe', pipesState);
   }
@@ -153,14 +190,19 @@ const updatePipes = (pipesState, newPipe, currentPipe, birdState) => {
   return pipesState;
 };
 
+const scoreSubject$ = new Rx.BehaviorSubject();
+
 const intialGameState = {
-  score: 0,
   pipes: [],
-  dead: false,
   ...initialBirdState,
 };
 const game$ = bird$
-  .merge(pipe$.withLatestFrom(bird$, (newPipe, bird) => ({ newPipe, bird })))
+  .merge(
+    pipe$.withLatestFrom(bird$, (newPipe, bird) => ({
+      newPipe,
+      bird,
+    }))
+  )
   .scan((state, event) => {
     const bird = event.bird || event;
 
@@ -199,11 +241,10 @@ const game$ = bird$
 
     return newState;
   }, intialGameState)
-  .share();
+  .multicast(scoreSubject$);
 
 const playerDead = state => {
   toggleAnimation(false);
-  //skip right to showing score
   showScore(state);
 };
 
@@ -212,7 +253,37 @@ const showScore = state => {
   document.getElementById('bigscore').style.display = 'none';
   document.getElementById('replay').classList.add('isShown');
 
-  input$.take(1).subscribe(reset);
+  const scoreSub = score$.do(console.warn).subscribe(({ score, highScore }) => {
+    setHighScore(highScore);
+    setMedal(score);
+    setSmallScore(score);
+  });
+
+  input$
+    .withLatestFrom(Rx.Observable.of(1).delay(1000))
+    .take(1)
+    .subscribe(_ => {
+      scoreSub.unsubscribe();
+      reset();
+    });
 };
 
-const score$ = game$.scan((score, state) => {});
+const initialScore = {
+  highScore: 0,
+  score: 0,
+};
+const score$ = scoreSubject$
+  .scan(({ score, highScore }, gameState) => {
+    if (gameState) {
+      score = pipePassed(gameState.currentPipe, gameState.bird) ? score + 1 : score;
+    } else {
+      score = 0;
+    }
+
+    return {
+      score,
+      highScore: score > highScore ? score : highScore,
+    };
+  }, initialScore)
+  .do(x => console.log('s', x))
+  .share();
