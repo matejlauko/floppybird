@@ -1,17 +1,15 @@
 {
-  "name": "reactive-floppy",
-  "version": "0.1.0",
-  "private": true,
+  "name": "reactive-floppybird",
+  "version": "0.2.0",
+  "license": "Apache-2.0",
   "repository": "https://github.com/matejlauko/floppybird",
-  "dependencies": {
-    "react-scripts": "1.0.13",
-    "rxjs": "^5.4.3",
-    "velocity-animate": "^1.5.0"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "build": "babel src/index.js -o public/index.js",
+    "start": ""
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.0"
   }
 }

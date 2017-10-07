@@ -322,6 +322,9 @@ Screen - Game
   width: 44px;
   height: 44px;
 }
+#medal.isShown {
+  opacity: 1;
+}
 
 #currentscore {
   position: absolute;
