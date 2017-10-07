@@ -16,6 +16,7 @@ const PIPE_PADDING = 80;
 const BIRD_WIDTH = 34.0;
 const BIRD_HEIGHT = 24.0;
 const SPACEBAR_KEYCODE = 32;
+const ASSET_URL_BASE = 'public/assets/';
 
 let flyArea = null;
 let landTop = null;
@@ -206,7 +207,7 @@ const score$ = scoreSubject$
 const createScoreImage = (digits, elemscore, type = 'small') => {
   for (var i = 0; i < digits.length; i++) {
     const img = document.createElement('img');
-    img.src = `assets/font_${type}_${digits[i]}.png`;
+    img.src = `${ASSET_URL_BASE}font_${type}_${digits[i]}.png`;
     img.alt = digits[i];
     elemscore.appendChild(img);
   }
@@ -246,7 +247,7 @@ const setMedal = score => {
   if (score >= 40) medal = 'platinum';
 
   const img = document.createElement('img');
-  img.src = `assets/medal_${medal}.png`;
+  img.src = `${ASSET_URL_BASE}medal_${medal}.png`;
   img.alt = medal;
 
   elemmedal.appendChild(img);

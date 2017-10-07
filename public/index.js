@@ -20,6 +20,7 @@ var PIPE_PADDING = 80;
 var BIRD_WIDTH = 34.0;
 var BIRD_HEIGHT = 24.0;
 var SPACEBAR_KEYCODE = 32;
+var ASSET_URL_BASE = 'public/assets/';
 
 var flyArea = null;
 var landTop = null;
@@ -223,7 +224,7 @@ var createScoreImage = function createScoreImage(digits, elemscore) {
 
   for (var i = 0; i < digits.length; i++) {
     var img = document.createElement('img');
-    img.src = 'assets/font_' + type + '_' + digits[i] + '.png';
+    img.src = ASSET_URL_BASE + 'font_' + type + '_' + digits[i] + '.png';
     img.alt = digits[i];
     elemscore.appendChild(img);
   }
@@ -265,7 +266,7 @@ var setMedal = function setMedal(score) {
   if (score >= 40) medal = 'platinum';
 
   var img = document.createElement('img');
-  img.src = 'assets/medal_' + medal + '.png';
+  img.src = ASSET_URL_BASE + 'medal_' + medal + '.png';
   img.alt = medal;
 
   elemmedal.appendChild(img);
