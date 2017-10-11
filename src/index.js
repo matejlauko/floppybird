@@ -304,10 +304,6 @@ const isAlive = ({ bird, currentPipe }) => {
     currentPipe &&
     (currentPipe.topPipeBottom > bird.position || currentPipe.bottomPipeTop < bird.bottom);
 
-  if (deadByPipe) {
-    debugger;
-  }
-
   return bird.bottom < landTop && !deadByPipe;
 };
 

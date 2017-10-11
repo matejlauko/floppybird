@@ -366,7 +366,7 @@ var game$ = bird$.merge(pipe$.withLatestFrom(bird$, function (newPipe, bird) {
   var boxwidth = BIRD_WIDTH - Math.sin(Math.abs(bird.rotation) / 90) * 8;
   var boxheight = (BIRD_HEIGHT + box.height) / 2;
   var boxleft = (box.width - boxwidth) / 2 + box.left;
-  var boxtop = (box.height - boxheight) / 2 + box.top;
+  var boxtop = (box.height - boxheight) / 2 + bird.position;
   var boxright = boxleft + boxwidth;
   var boxbottom = boxtop + boxheight;
 
