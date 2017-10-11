@@ -376,7 +376,8 @@ var game$ = bird$.merge(pipe$.withLatestFrom(bird$, function (newPipe, bird) {
       width: boxwidth,
       left: boxleft,
       right: boxright,
-      bottom: boxbottom
+      bottom: boxbottom,
+      top: boxtop
     })
   });
 

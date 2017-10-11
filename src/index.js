@@ -363,6 +363,7 @@ const game$ = bird$
         left: boxleft,
         right: boxright,
         bottom: boxbottom,
+        top: boxtop,
       },
     };
 
