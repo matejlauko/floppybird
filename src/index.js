@@ -304,6 +304,10 @@ const isAlive = ({ bird, currentPipe }) => {
     currentPipe &&
     (currentPipe.topPipeBottom > bird.position || currentPipe.bottomPipeTop < bird.bottom);
 
+  if (deadByPipe) {
+    debugger;
+  }
+
   return bird.bottom < landTop && !deadByPipe;
 };
 
@@ -350,7 +354,7 @@ const game$ = bird$
     const boxwidth = BIRD_WIDTH - Math.sin(Math.abs(bird.rotation) / 90) * 8;
     const boxheight = (BIRD_HEIGHT + box.height) / 2;
     const boxleft = (box.width - boxwidth) / 2 + box.left;
-    const boxtop = (box.height - boxheight) / 2 + box.top;
+    const boxtop = (box.height - boxheight) / 2 + bird.position;
     const boxright = boxleft + boxwidth;
     const boxbottom = boxtop + boxheight;
 
